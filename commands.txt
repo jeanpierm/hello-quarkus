@@ -1,0 +1,14 @@
+# run dev
+./mvnw compile quarkus:dev
+
+# package native
+mvn package `-Dmaven.test.skip=true `-Pnative
+
+# add docker extension
+mvn quarkus:add-extension `-Dextensions="container-image-docker"
+
+# package container
+./mvnw clean package `-Dmaven.test.skip=true `-Dquarkus.container-image.build=true
+
+# run docker container
+docker run --rm -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true gizlo/hello:1.0.0-SNAPSHOT
