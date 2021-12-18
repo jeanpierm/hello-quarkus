@@ -1,4 +1,4 @@
-package com.gizlo;
+package com.jm;
 
 import io.quarkus.test.junit.NativeImageTest;
 

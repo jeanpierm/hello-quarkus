@@ -1,4 +1,4 @@
-package com.gizlo;
+package com.jm;
 
 
 import org.jboss.logging.Logger;
