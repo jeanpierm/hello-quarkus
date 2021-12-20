@@ -1,0 +1,2 @@
+### get monitors
+GET http://localhost:8080/monitors
