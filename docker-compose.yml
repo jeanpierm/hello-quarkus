@@ -1,8 +1,8 @@
-version: "3.8"
+version: "3.9"
 
 services:
   postgres:
-    image: postgres:14.1-alpine
+    image: postgres:latest
     restart: always
     ports:
       - "5432:5432"
@@ -10,22 +10,9 @@ services:
       - DATABASE_HOST=127.0.0.1
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=database
+      - POSTGRES_DB=quarkus_db
     volumes:
-      - postgresql-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-
-  pgadmin:
-    image: dpage/pgadmin4
-    ports:
-      - "80:80"
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "jeanpi3rm@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "123"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    depends_on:
-      - postgres
+      - postgres_data:/var/lib/postgresql/data/ # persist data even if container shuts down
 
 volumes:
-  postgresql-data: # named volumes can be managed easier using docker-compose
-  pgadmin:
+  postgres_data:

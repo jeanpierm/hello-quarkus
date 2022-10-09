@@ -19,12 +19,8 @@ public class MonitorService {
     }
 
     public Monitor findById(Long id) {
-        Monitor monitor = monitorRepository.findById(id);
-        if (monitor == null) {
-            throw new WebApplicationException("Monitor with id of " + id + " does not exist.", 404);
-        }
-
-        return monitor;
+        return monitorRepository.findByIdOptional(id)
+                .orElseThrow(() -> new WebApplicationException("Monitor with id of " + id + " does not exist.", 404));
     }
 
     public Monitor create(Monitor monitor) {
