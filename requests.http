@@ -1,12 +1,10 @@
 ### get hello
-
 GET http://localhost:8080/hello
 
 ### get monitors
 GET http://localhost:8080/monitors
 
 ### create monitor
-
 POST http://localhost:8080/monitors
 Content-Type: application/json
 

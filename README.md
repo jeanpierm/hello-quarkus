@@ -1,4 +1,6 @@
-# hello Project
+# Quarkus RESTful API - Example
+
+![swagger-ui](./screenshots/swagger.png)
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
