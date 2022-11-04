@@ -13,7 +13,7 @@ import static javax.ws.rs.core.Response.Status.*;
 
 @ApplicationScoped
 public class MonitorService {
-    
+
     @Inject
     MonitorRepository monitorRepository;
 
@@ -33,34 +33,27 @@ public class MonitorService {
         return monitor;
     }
 
-    public Monitor create(Monitor monitor) {
-        if (monitor.getId() != null) {
-            throw new WebApplicationException("Id was invalidly set on request.", BAD_REQUEST);
-        }
-        if (monitor.getPrice() == null) {
-            throw new WebApplicationException("Monitor price was not set on request.", BAD_REQUEST);
-        }
-        Optional<Monitor> optionalMonitor = monitorRepository.findByModel(monitor.getModel());
+    public Monitor create(MonitorRequestDto monitorDto) {
+        Optional<Monitor> optionalMonitor = monitorRepository.findByModel(monitorDto.getModel());
         if (optionalMonitor.isPresent()) {
-            throw new WebApplicationException("Monitor model '" + monitor.getModel() + "' already registered " +
+            throw new WebApplicationException("Monitor model '" + monitorDto.getModel() + "' already registered " +
                     "with id '" + optionalMonitor.get().getId() +"'.", CONFLICT);
         }
+        Monitor monitor = MonitorMapper.requestToMonitor(monitorDto);
         monitorRepository.persist(monitor);
         logger.info("Monitor with id " + monitor.getId() + " created");
 
         return monitor;
     }
 
-    public Monitor update(Monitor monitor, Long id) {
-        if (monitor.getModel() == null) {
-            throw new WebApplicationException("Monitor name was not set on request.", BAD_REQUEST);
-        }
-        if (monitor.getPrice() == null) {
-            throw new WebApplicationException("Monitor price was not set on request.", BAD_REQUEST);
-        }
+    public Monitor update(MonitorRequestDto monitor, Long id) {
         Monitor entity = findById(id);
-        entity.setModel(monitor.getModel());
-        entity.setPrice(monitor.getPrice());
+        if (monitor.getModel() != null) {
+            entity.setModel(monitor.getModel());
+        }
+        if (monitor.getPrice() != null) {
+            entity.setPrice(monitor.getPrice());
+        }
         logger.info("Monitor with id " + id + " upgraded");
 
         return entity;
