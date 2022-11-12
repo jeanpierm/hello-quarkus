@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.Response.Status.*;
 
@@ -31,6 +32,13 @@ public class MonitorService {
                 .orElseThrow(() -> new WebApplicationException("Monitor with id of " + id + " does not exist.", NOT_FOUND));
         logger.info("Monitor with id " + id + " obtained");
         return monitor;
+    }
+    
+    public List<String> getAllModels() {
+    	var monitorNames = monitorRepository.listAll(Sort.by("model")).stream()
+    			.map(monitor -> monitor.getModel())
+    			.collect(Collectors.toList());
+    	return monitorNames;
     }
 
     public Monitor create(MonitorRequestDto monitorDto) {

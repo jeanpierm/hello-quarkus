@@ -4,6 +4,7 @@ import static javax.ws.rs.core.Response.Status.CREATED;
 import static javax.ws.rs.core.Response.Status.NO_CONTENT;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -44,9 +45,21 @@ public class MonitorResource {
     @Inject
     Validator validator;
 
+    @Inject
+    ObjectMapper objectMapper;
+
     @GET
     public List<Monitor> get() {
         return monitorService.listAll();
+    }
+
+    @GET
+    @Path("/models")
+    public Response getModels() {
+        LOGGER.info("Obteniendo modelos...");
+        Map<String, Object> res = Map.of("models", monitorService.getAllModels());
+        LOGGER.info("Modelos obtenidos... " + res.toString());
+        return Response.ok(res).build();
     }
 
     @GET
